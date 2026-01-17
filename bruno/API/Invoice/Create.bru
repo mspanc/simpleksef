@@ -1,0 +1,22 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5113/api/v1/invoice
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "number": "123/456"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
