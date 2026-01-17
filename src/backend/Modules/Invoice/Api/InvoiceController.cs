@@ -3,6 +3,7 @@ using SimpleKsef.Infrastructure.Web;
 
 namespace SimpleKsef.Modules.Invoice.Api;
 
+
 /// <summary>
 /// Invoice creation request.
 /// </summary>

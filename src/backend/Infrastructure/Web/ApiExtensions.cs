@@ -1,5 +1,7 @@
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
+using SimpleKsef.Schema.Filters;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace SimpleKsef.Infrastructure.Web;
@@ -16,11 +18,19 @@ public static class ApiExtensions
     {
         builder.Services.AddProblemDetails();
         builder.Services.AddRouting(o => { o.LowercaseUrls = true; });
-        builder.Services.ConfigureHttpJsonOptions(o => o.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+        builder.Services.ConfigureHttpJsonOptions(o => {
+            o.SerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseUpper));
+        });
+
         builder.Services.AddControllers(o =>
         {
           o.ReturnHttpNotAcceptable = true;
-        }).AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+          o.Filters.Add<TZnakowyNormalizationFilter>();
+        }).AddJsonOptions(o =>
+        {
+            o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseUpper));
+        });
 
         builder.Services.ConfigureHttpJsonOptions(o =>
         {
